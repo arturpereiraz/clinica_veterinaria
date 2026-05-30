@@ -69,9 +69,20 @@ while resp != '0':
         print("##  4 - Excluir Veterinário           #")
         print("##  0- Sair                           #")
         opcao = input("Digite uma opção: ")
+        
+        if opcao=='1':
+            print("#############################")
+            print("#### Cadastrar Veterinário #####")
+            print("#############################")
+            print()
+            nome=input("Nome:")
+            dta_nas=input("Data de nascimento(xx/xx/xxx):")
+            cpf=input("CPF:")
+            fone=input("Telefone:")
+            crmv=input("Digite seu CRMV:")
+            id=input("ID:")
+    
     elif resp == '4':
-        # A inteção inicial desse módulo é associar consultas com os Animais e veterinários ou com um apenas.
-        # Ver se é melhor criar um dicionário aqui ou dentro dos outros módulos.
         os.system("clear")  
         
         print("#############################")

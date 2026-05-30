@@ -26,8 +26,21 @@ while resp != '0':
         print("##  2 - Exibir dados de Cliente  #")
         print("##  3 - Alterar dados de Cliente #")
         print("##  4 - Excluir Cliente          #")
+        print("##  5 - Menu Principal           #")
         print("##  0- Sair                      #")
         opcao = input("Digite uma opção: ")
+
+        if opcao=='1':
+            print("#############################")
+            print("#### Cadastrar Cliente #####")
+            print("#############################")
+            print()
+            nome=input("Nome:")
+            dta_nas=input("Data de nascimento(xx/xx/xxx):")
+            cpf=input("CPF:")
+            fone=input("Telefone:")
+            id=input("ID:")
+
 
     elif resp == '2':
         

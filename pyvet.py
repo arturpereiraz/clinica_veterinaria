@@ -31,6 +31,9 @@ while resp != '0':
         opcao = input("Digite uma opção: ")
 
         if opcao=='1':
+
+            os.system("clear")  
+
             print("#############################")
             print("#### Cadastrar Cliente #####")
             print("#############################")
@@ -55,6 +58,21 @@ while resp != '0':
         print("##  4 - Excluir Animal           #")
         print("##  0- Sair                      #")
         opcao = input("Digite uma opção: ")
+
+        if opcao=="1":
+            
+            os.system("clear")  
+            
+            print("#############################")
+            print("#### Cadastrar Animal #####")
+            print("#############################")
+            print()
+            nome=input("Nome:")
+            dta_nas=input("Data de nascimento(xx/xx/xxx):")
+            cpf=input("Tipo:")
+            fone=input("Raça:")
+            id=input("ID:")
+            id_clie=input("Digite o id do cliente:")
     
     elif resp == '3':
         
@@ -71,6 +89,9 @@ while resp != '0':
         opcao = input("Digite uma opção: ")
         
         if opcao=='1':
+            
+            os.system("clear")  
+
             print("#############################")
             print("#### Cadastrar Veterinário #####")
             print("#############################")
@@ -94,10 +115,20 @@ while resp != '0':
         print("##  4 - Excluir Consulta           #")
         print("##  0- Sair                        #")
         opcao = input("Digite uma opção: ")
-        if opcao=="0":
-            pass
-        elif opcao=="2":
-            print("JIOdjoidf")
+
+        if opcao=="1":
+                    
+            os.system("clear")  
+
+            print("#############################")
+            print("#### Cadastrar Consulta #####")
+            print("#############################")
+            print()
+            id_clie=input("ID cliente:")
+            id_ani=input("ID animal:")
+            id_vet=input("ID veterinário:")
+            dta_consul=input("Data:")
+            status=input("Status:")
 
     elif resp=="5":
         

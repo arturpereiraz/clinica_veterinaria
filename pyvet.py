@@ -2,6 +2,15 @@ import  os
 
 resp = ''
 
+clientes={}
+
+animais={}
+
+veterinarios={}
+
+consultas={}
+
+
 while resp != '0':
     print("#############################")
     print("#### PYVET-GERENCIMENTO #####")
@@ -42,8 +51,10 @@ while resp != '0':
             dta_nas=input("Data de nascimento(xx/xx/xxx):")
             cpf=input("CPF:")
             fone=input("Telefone:")
-            id=input("ID:")
+            id=(len(clientes)+1)
+            clientes[id]=[nome,dta_nas,cpf,fone]
 
+            print(clientes)
 
     elif resp == '2':
         
@@ -69,11 +80,13 @@ while resp != '0':
             print()
             nome=input("Nome:")
             dta_nas=input("Data de nascimento(xx/xx/xxx):")
-            cpf=input("Tipo:")
-            fone=input("Raça:")
-            id=input("ID:")
+            tipo=input("Tipo:")
+            raca=input("Raça:")
+            id=(len(animais)+1)
             id_clie=input("Digite o id do cliente:")
-    
+            
+            animais[id]=[nome,dta_nas,tipo,raca,id_clie]
+
     elif resp == '3':
         
         os.system("clear")  
@@ -101,8 +114,10 @@ while resp != '0':
             cpf=input("CPF:")
             fone=input("Telefone:")
             crmv=input("Digite seu CRMV:")
-            id=input("ID:")
-    
+            id=(len(veterinarios)+1)
+
+            veterinarios[id]=[nome,dta_nas,cpf,fone,crmv]
+
     elif resp == '4':
         os.system("clear")  
         
@@ -127,8 +142,11 @@ while resp != '0':
             id_clie=input("ID cliente:")
             id_ani=input("ID animal:")
             id_vet=input("ID veterinário:")
+            id=(len(consultas)+1)
             dta_consul=input("Data:")
             status=input("Status:")
+            
+            consultas[id]=[id_clie, id_ani,id_vet,dta_consul,status]
 
     elif resp=="5":
         

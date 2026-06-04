@@ -2,13 +2,20 @@ import  os
 
 resp = ''
 
-clientes={}
+clientes={
+    1:["artur","01/04/20006","70168641461","999999",]}
 
-animais={}
+animais={
+    1:["Pingo","23/04/2021","Cachorro","Vira-lata",1]
+    }
 
-veterinarios={}
+veterinarios={
+    1:["Maria","13/01/2002","9489438","999999","1234"]
+    }
 
-consultas={}
+consultas={
+    1:[1,1,1,"04/06/2026","Marcada"]
+    }
 
 
 while resp != '0':
@@ -55,6 +62,21 @@ while resp != '0':
             clientes[id]=[nome,dta_nas,cpf,fone]
 
             print(clientes)
+        
+        elif opcao=="2":
+            os.system("clear")  
+
+            print("#############################")
+            print("#### Exibir dados Cliente #####")
+            print("#############################")
+            print()
+
+            id=int(input("Informe o ID do cliente:"))
+            if id in clientes:
+                print(f"Nome:{clientes[id][0]}")
+                print(f"Data nascimento:{clientes[id][1]}")
+                print(f"Cpf:{clientes[id][2]}")
+                print(f"Fone:{clientes[id][3]}")
 
     elif resp == '2':
         
@@ -87,6 +109,22 @@ while resp != '0':
             
             animais[id]=[nome,dta_nas,tipo,raca,id_clie]
 
+        elif opcao=="2":
+            os.system("clear")  
+
+            print("#############################")
+            print("#### Exibir dados Animal#####")
+            print("#############################")
+            print()
+
+            id=int(input("Informe o ID do animal:"))
+            if id in animais:
+                print(f"Nome:{animais[id][0]}")
+                print(f"Data nascimento:{animais[id][1]}")
+                print(f"Tipo:{animais[id][2]}")
+                print(f"Raça:{animais[id][3]}")
+                print(f"Dono(a):{clientes[animais[id][4]][0]}")
+
     elif resp == '3':
         
         os.system("clear")  
@@ -117,6 +155,24 @@ while resp != '0':
             id=(len(veterinarios)+1)
 
             veterinarios[id]=[nome,dta_nas,cpf,fone,crmv]
+        
+        elif opcao=="2":
+            
+            os.system("clear")  
+
+            print("#############################")
+            print("#### Exibir dados Veterinário #####")
+            print("#############################")
+            print()
+
+            id=int(input("Informe o ID do veterinário:"))
+            if id in veterinarios:
+                print(f"Nome:{veterinarios[id][0]}")
+                print(f"Data nascimento:{veterinarios[id][1]}")
+                print(f"Cpf:{veterinarios[id][2]}")
+                print(f"Fone:{veterinarios[id][3]}")
+                print(f"CRMV:{veterinarios[id][4]}")
+
 
     elif resp == '4':
         os.system("clear")  
@@ -147,6 +203,25 @@ while resp != '0':
             status=input("Status:")
             
             consultas[id]=[id_clie, id_ani,id_vet,dta_consul,status]
+
+        elif opcao=="2":
+            os.system("clear")  
+
+            print("#############################")
+            print("#### Exibir dados Consulta#####")
+            print("#############################")
+            print()
+
+            id=int(input("Informe o ID da consulta:"))
+            if id in consultas:
+                print(f"Cliente:{clientes[consultas[id][0]][0]}")
+                print(f"Animal:{animais[consultas[id][1]][0]}")
+                print(f"Veterinário:{veterinarios[consultas[id][2]][0]}")
+                print(f"Data:{consultas[id][3]}")
+                print(f"Status:{consultas[id][4]}")
+
+
+        
 
     elif resp=="5":
         

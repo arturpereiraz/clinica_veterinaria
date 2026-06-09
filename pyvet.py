@@ -43,7 +43,6 @@ while resp != '0':
         print("##  3 - Alterar dados de Cliente #")
         print("##  4 - Excluir Cliente          #")
         print("##  5 - Menu Principal           #")
-        print("##  0- Sair                      #")
         opcao = input("Digite uma opção: ")
 
         if opcao=='1':
@@ -77,6 +76,37 @@ while resp != '0':
                 print(f"Data nascimento:{clientes[id][1]}")
                 print(f"Cpf:{clientes[id][2]}")
                 print(f"Fone:{clientes[id][3]}")
+        
+        elif opcao=="3":
+            os.system("clear")  
+
+            print("#############################")
+            print("#### Alterar dados Cliente #####")
+            print("#############################")
+            print()
+
+            id=int(input("Digite o id do cliente:"))
+
+            if id in clientes:
+                nv_nome=input("Nome:")
+                nv_dta_nas=input("Data de nascimento(xx/xx/xxx):")
+                nv_cpf=input("CPF:")
+                nv_fone=input("Telefone:")
+                clientes[id]=[nv_nome, nv_dta_nas,nv_cpf,nv_fone]
+        
+        elif opcao=="4":
+            os.system("clear")  
+
+
+            print("#############################")
+            print("#### Excluir Cliente #####")
+            print("#############################")
+            print()
+
+            id=int(input("Digite o id do cliente:"))
+        
+            del clientes[id]
+        
 
     elif resp == '2':
         
@@ -89,7 +119,8 @@ while resp != '0':
         print("##  2 - Exibir dados de Animal   #")
         print("##  3 - Alterar dados de Animal  #")
         print("##  4 - Excluir Animal           #")
-        print("##  0- Sair                      #")
+        print("##  5 - Menu Principal           #")
+
         opcao = input("Digite uma opção: ")
 
         if opcao=="1":
@@ -125,6 +156,38 @@ while resp != '0':
                 print(f"Raça:{animais[id][3]}")
                 print(f"Dono(a):{clientes[animais[id][4]][0]}")
 
+        elif opcao=="3":
+            os.system("clear")  
+
+            print("#############################")
+            print("#### Alterar dados Animal #####")
+            print("#############################")
+            print()
+
+            id=int(input("Digite o id do animal:"))
+
+            if id in animais:
+                nv_nome=input("Nome:")
+                nv_dta_nas=input("Data de nascimento(xx/xx/xxx):")
+                nv_tipo=input("Tipo:")
+                nv_raca=input("Raça:")
+                nv_dono=input("Dono(a):")
+                animais[id]=[nv_nome, nv_dta_nas, nv_tipo,nv_raca,nv_dono]
+        
+        elif opcao=="4":
+            os.system("clear")  
+
+
+            print("#############################")
+            print("#### Excluir Animal #####")
+            print("#############################")
+            print()
+
+            id=int(input("Digite o id do cliente:"))
+        
+            del animais[id]
+        
+
     elif resp == '3':
         
         os.system("clear")  
@@ -136,7 +199,8 @@ while resp != '0':
         print("##  2 - Exibir dados de Veterinário   #")
         print("##  3 - Alterar dados de Veterinário  #")
         print("##  4 - Excluir Veterinário           #")
-        print("##  0- Sair                           #")
+        print("##  5 - Menu Principal                #")
+
         opcao = input("Digite uma opção: ")
         
         if opcao=='1':
@@ -173,6 +237,38 @@ while resp != '0':
                 print(f"Fone:{veterinarios[id][3]}")
                 print(f"CRMV:{veterinarios[id][4]}")
 
+        elif opcao=="3":
+            os.system("clear")  
+
+            print("#############################")
+            print("#### Alterar dados Veterinário #####")
+            print("#############################")
+            print()
+
+            id=int(input("Digite o id do veterinário:"))
+
+            if id in veterinarios:
+                nv_nome=input("Nome:")
+                nv_dta_nas=input("Data de nascimento(xx/xx/xxx):")
+                nv_cpf=input("CPF:")
+                nv_fone=input("Telefone:")
+                nv_crmv=input("CRMV:")
+                veterinarios[id]=[nv_nome, nv_dta_nas,nv_cpf,nv_fone, nv_crmv]
+        
+        elif opcao=="4":
+            os.system("clear")  
+
+
+            print("#############################")
+            print("#### Excluir Veterinário #####")
+            print("#############################")
+            print()
+
+            id=int(input("Digite o id do veterinário:"))
+        
+            del veterinarios[id]
+    
+        
 
     elif resp == '4':
         os.system("clear")  
@@ -184,7 +280,8 @@ while resp != '0':
         print("##  2 - Exibir dados de Consulta   #")
         print("##  3 - Alterar dados de Consulta  #")
         print("##  4 - Excluir Consulta           #")
-        print("##  0- Sair                        #")
+        print("##  5 - Menu Principal             #")
+
         opcao = input("Digite uma opção: ")
 
         if opcao=="1":
@@ -220,8 +317,37 @@ while resp != '0':
                 print(f"Data:{consultas[id][3]}")
                 print(f"Status:{consultas[id][4]}")
 
+        elif opcao=="3":
+            
+            os.system("clear")  
 
+            print("#############################")
+            print("#### Alterar consulta #####")
+            print("#############################")
+            print()
+
+            id=int(input("Digite o id da consulta:"))
+
+            if id in consultas:
+                nv_nid_clie=int(input("ID cliente:"))
+                nv_id_ani=int(input("ID animal:"))
+                nv_id_vet=int(input("ID veterinário:"))
+                nv_dta_consul=input("Data:")
+                nv_status=input("Status:")
+                consultas[id]=[nv_nid_clie,nv_id_ani,nv_id_vet,nv_dta_consul,nv_status]
         
+        elif opcao=="4":
+            os.system("clear")  
+
+
+            print("#############################")
+            print("#### Excluir Consulta #####")
+            print("#############################")
+            print()
+
+            id=int(input("Digite o id da consulta:"))
+        
+            del consultas[id]        
 
     elif resp=="5":
         

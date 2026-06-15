@@ -4,7 +4,7 @@ resp = ''
 
 clientes={
     1:["artur","01/04/20006","70168641461","999999",]}
-
+ 
 animais={
     1:["Pingo","23/04/2021","Cachorro","Vira-lata",1]
     }

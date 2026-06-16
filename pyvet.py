@@ -3,11 +3,10 @@ import  os
 resp = ''
 
 clientes={
-    1:["artur","01/04/20006","70168641461","999999",]}
+    }
  
 animais={
-    1:["Pingo","23/04/2021","Cachorro","Vira-lata",1]
-    }
+  }
 
 veterinarios={
     1:["Maria","13/01/2002","9489438","999999","1234"]
@@ -64,11 +63,21 @@ while resp != '0':
                 cpf=input("CPF:")
                 fone=input("Telefone:")
                 id=(len(clientes)+1)
+                id=str(id)
                 clientes[id]=[nome,dta_nas,cpf,fone]
 
-                with open ("clientes.txt", "a") as arquivo:
-                    arquivo.write(f"{nome},{dta_nas},{cpf},{fone},{id}")
-                    
+                arq_alunos=open("clientes.txt","w")
+                
+                for id in clientes:
+                    arq_alunos.write(id+',')
+                    arq_alunos.write(clientes[id][0]+',')
+                    arq_alunos.write(clientes[id][1]+',')
+                    arq_alunos.write(clientes[id][2]+',')
+                    arq_alunos.write(clientes[id][3]+'\n')
+                
+                arq_alunos.close()
+
+
                 print(f"Cliente cadastrado com sucesso!")
         
                 for chave in clientes:
@@ -163,12 +172,22 @@ while resp != '0':
                 tipo=input("Tipo:")
                 raca=input("Raça:")
                 id=(len(animais)+1)
+                id=str(id)
                 id_clie=input("Digite o id do cliente:")
             
                 animais[id]=[nome,dta_nas,tipo,raca,id_clie]
 
-                with open ("animais.txt", "a") as arquivo:
-                    arquivo.write(f"{nome},{dta_nas},{tipo},{raca},{id},{id_clie}")
+                arq_animais=open("animais.txt","w")
+                
+                for id in animais:
+                    arq_animais.write(id+',')
+                    arq_animais.write(animais[id][0]+',')
+                    arq_animais.write(animais[id][1]+',')
+                    arq_animais.write(animais[id][2]+',')
+                    arq_animais.write(animais[id][3]+',')
+                    arq_animais.write(animais[id][4]+',')
+                
+                arq_animais.close()
 
                 print(f"Animal cadastrado com sucesso!")
             
@@ -187,7 +206,7 @@ while resp != '0':
                 print("#############################")
                 print()
 
-                id=int(input("Informe o ID do animal:"))
+                id=input("Informe o ID do animal:")
                 if id in animais:
                     print(f"Nome:{animais[id][0]}")
                     print(f"Data nascimento:{animais[id][1]}")
@@ -268,8 +287,17 @@ while resp != '0':
 
                 veterinarios[id]=[nome,dta_nas,cpf,fone,crmv]
 
-                with open ("veterinarios.txt", "a") as arquivo:
-                    arquivo.write(f"{nome},{dta_nas},{cpf},{fone},{crmv},{id}")
+                arq_veterinarios=open("veterinarios.txt","w")
+                
+                for id in veterinarios:
+                    arq_veterinarios.write(id+',')
+                    arq_veterinarios.write(veterinarios[id][0]+',')
+                    arq_veterinarios.write(veterinarios[id][1]+',')
+                    arq_veterinarios.write(veterinarios[id][2]+',')
+                    arq_veterinarios.write(veterinarios[id][3]+',')
+                    arq_veterinarios.write(veterinarios[id][4]+'\n')
+                
+                arq_veterinarios.close()
 
                 print(f"Veterinário cadastrado com sucesso!")
             
@@ -367,13 +395,23 @@ while resp != '0':
                 id_ani=input("ID animal:")
                 id_vet=input("ID veterinário:")
                 id=(len(consultas)+1)
+                id=str(id)
                 dta_consul=input("Data:")
                 status=input("Status:")
             
                 consultas[id]=[id_clie, id_ani,id_vet,dta_consul,status]
-
-                with open ("consultas.txt", "a") as arquivo:
-                    arquivo.write(f"{id_clie},{id_ani},{id_vet},{id},{dta_consul}")
+                
+                arq_consultas=open("consultas.txt","w")
+                
+                for id in consultas:
+                    arq_consultas.write(id+',')
+                    arq_consultas.write(consultas[id][0]+',')
+                    arq_consultas.write(consultas[id][1]+',')
+                    arq_consultas.write(consultas[id][2]+',')
+                    arq_consultas.write(consultas[id][3]+',')
+                    arq_consultas.write(consultas[id][4]+'\n')
+                
+                arq_consultas.close()
 
                 print(f"Consulta cadastrada com sucesso!")
             

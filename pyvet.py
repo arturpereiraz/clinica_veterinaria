@@ -1,78 +1,20 @@
+from clientes import recuperar_dados_clientes
+from animais import recuperar_dados_aniamis
+from veterinarios import recuperar_dados_veterinarios
+from consultas import recuperar_dados_consultas
 import  os
 
 resp = ''
 
 clientes={}
- 
 animais={}
-
 veterinarios={}
-
 consultas={}
 
-try:
-    arq_clientes = open("clientes.txt", "r")
-    for linha in arq_clientes:
-        if linha.strip():  # Evita linhas vazias    
-            campos = linha.strip().split(',')
-            id_salvo = campos[0]
-            nome = campos[1]
-            dta_nas = campos[2]
-            cpf = campos[3]
-            fone = campos[4]
-            clientes[id_salvo] = [nome, dta_nas, cpf, fone]
-    arq_clientes.close()
-except FileNotFoundError:
-    pass
-
-try:
-    arq_animais = open("animais.txt", "r")
-    for linha in arq_animais:
-        if linha.strip():
-            campos = linha.strip().split(',')
-            id_salvo = campos[0]
-            nome = campos[1]
-            dta_nas = campos[2]
-            tipo = campos[3]
-            raca = campos[4]
-            id_cli=campos[5]
-            animais[id_salvo] = [nome, dta_nas,tipo,raca,id_cli]
-    arq_animais.close()
-except FileNotFoundError:
-    pass
-
-
-try:
-    arq_veterinarios = open("veterinarios.txt", "r")
-    for linha in arq_veterinarios:
-        if linha.strip():     
-            campos = linha.strip().split(',')
-            id_salvo = campos[0]
-            nome = campos[1]
-            dta_nas = campos[2]
-            cpf = campos[3]
-            fone = campos[4]
-            crmv=campos[5]
-            veterinarios[id_salvo] = [nome, dta_nas, cpf, fone,crmv]
-    arq_veterinarios.close()
-except FileNotFoundError:
-    pass
-
-try:
-    arq_consultas = open("consultas.txt", "r")
-    for linha in arq_consultas:
-        if linha.strip(): 
-            campos = linha.strip().split(',')
-            id_salvo = campos[0]
-            id_cli= campos[1]
-            id_ani = campos[2]
-            id_vet= campos[3]
-            dta_consul= campos[4]
-            status=campos[5]
-            consultas[id_salvo] = [id_cli, id_ani, id_vet,dta_consul,status]
-    arq_consultas.close()
-except FileNotFoundError:
-    pass
+recuperar_dados_clientes(clientes)
+recuperar_dados_aniamis(animais)
+recuperar_dados_veterinarios(veterinarios)
+recuperar_dados_consultas(consultas)
 
 
 while resp != '0':
@@ -122,24 +64,23 @@ while resp != '0':
                 dta_nas=input("Data de nascimento(xx/xx/xxx):")
                 cpf=input("CPF:")
                 fone=input("Telefone:")
+                status=("ativo")
                 id=str((len(clientes)+1))
-                clientes[id]=[nome,dta_nas,cpf,fone]
+                clientes[id]=[nome,dta_nas,cpf,fone,status]
 
                 arq_clientes=open("clientes.txt","a")
                 arq_clientes.write(id+',')
                 arq_clientes.write(clientes[id][0]+',')
                 arq_clientes.write(clientes[id][1]+',')
                 arq_clientes.write(clientes[id][2]+',')
-                arq_clientes.write(clientes[id][3]+'\n')
+                arq_clientes.write(clientes[id][3]+',')
+                arq_clientes.write(clientes[id][4]+'\n')
                 arq_clientes.close()
 
-                print(f"Cliente cadastrado com sucesso!")
-        
-                for chave in clientes:
-                    if chave==id:
-                        print(f"O id do cliente é {chave}")
-                        
-                input("Pressiona ENTER para continuar....")
+                print(f"Cliente cadastrado com sucesso!\nO id do cliente é {id}")
+                           
+                input("Pressione ENTER para continuar...")
+
 
             elif opcao=="2":
                 os.system("clear")  
@@ -154,15 +95,17 @@ while resp != '0':
                 arq_clientes= open("clientes.txt", "r")
                 for linha in arq_clientes:
                     campos=linha.strip().split(',')
-                    if campos[0]==id:
+                    if campos[0]==id and campos[5]=="ativo":
                         nome=campos[1]
                         dta_nas=campos[2]
                         cpf=campos[3]
                         fone=campos[4]
+                        status=campos[5]
                         print(f"Nome:{nome}")
                         print(f"Data de nascimento:{dta_nas}")
                         print(f"CPF:{cpf}")
                         print(f"Fone:{fone}")
+                        print(f"Status:{status}")
                 arq_clientes.close()
 
                 input("Pressione ENTER para continuar...")
@@ -183,15 +126,19 @@ while resp != '0':
                     nv_dta_nas=input("Data de nascimento(xx/xx/xxx):")
                     nv_cpf=input("CPF:")
                     nv_fone=input("Telefone:")
-                    clientes[id]=[nv_nome,nv_dta_nas,nv_cpf,nv_fone]
+                    nv_status=input("Status(Ativo/Inativo):)")
+                    nv_status=nv_status.lower()
+                    clientes[id]=[nv_nome,nv_dta_nas,nv_cpf,nv_fone,nv_status]
                                       
                     arq_clientes=open("clientes.txt","w")
                     for chaves, dados in clientes.items():
                         arq_clientes.write(chaves+',')
                         arq_clientes.write(dados[0]+',')
                         arq_clientes.write(dados[1]+',')
-                        arq_clientes.write(dados[2]+',')
-                        arq_clientes.write(dados[3]+'\n')
+                        arq_clientes.write(dados[2]+',')                                               
+                        arq_clientes.write(dados[3]+',')
+                        arq_clientes.write(dados[4]+'\n')
+
                     arq_clientes.close()
 
                     print("Dados alterados com sucesso")
@@ -209,7 +156,7 @@ while resp != '0':
 
                 id=input("Digite o id do cliente:")
     
-                del clientes[id]
+                clientes[id][4]="inativo"
 
                 arq_clientes=open('clientes.txt','w')
                 for chaves, dados in clientes.items():
@@ -217,12 +164,14 @@ while resp != '0':
                     arq_clientes.write(dados[0]+',')
                     arq_clientes.write(dados[1]+',')
                     arq_clientes.write(dados[2]+',')
-                    arq_clientes.write(dados[3]+'\n')
+                    arq_clientes.write(dados[3]+',')
+                    arq_clientes.write(dados[4]+'\n')
+
                 arq_clientes.close()
 
-                print("Cliente excluído com sucesso")
+                print("Cliente excluído/desativado com sucesso")
                 input("Pressione ENTER para continuar...")
-
+ 
         
 
     elif resp == '2':
@@ -257,8 +206,8 @@ while resp != '0':
                 raca=input("Raça:")
                 id=str((len(animais)+1))
                 id_clie=input("Digite o id do cliente:")
-            
-                animais[id]=[nome,dta_nas,tipo,raca,id_clie]
+                status=("ativo")
+                animais[id]=[nome,dta_nas,tipo,raca,id_clie,status]
 
                 arq_animais=open("animais.txt","a")
                 arq_animais.write(id+',')
@@ -266,14 +215,12 @@ while resp != '0':
                 arq_animais.write(animais[id][1]+',')
                 arq_animais.write(animais[id][2]+',')
                 arq_animais.write(animais[id][3]+',')
-                arq_animais.write(animais[id][4]+'\n')
+                arq_animais.write(animais[id][4]+',')
+                arq_animais.write(animais[id][5]+'\n')
+
                 arq_animais.close()
 
-                print(f"Animal cadastrado com sucesso!")
-            
-                for chave in animais:
-                    if chave==id:
-                        print(f"O id do animal é {chave}")
+                print(f"Animal cadastrado com sucesso!\nO id do animal é {id}")
                 
                 input("Pressione ENTER para continuar...")
 
@@ -290,17 +237,19 @@ while resp != '0':
                 arq_animais= open("animais.txt", "r")
                 for linha in arq_animais:
                     campos=linha.strip().split(',')
-                    if campos[0]==id:
+                    if campos[0]==id and campos[6]=="ativo":
                         nome=campos[1]
                         dta_nas=campos[2]
                         tipo=campos[3]
                         raca=campos[4]
+                        id_cli=campos[5]
+                        status=campos[6]
                         print(f"Nome:{nome}")
                         print(f"Data de nascimento:{dta_nas}")
                         print(f"Tipo:{tipo}")
                         print(f"Raça:{raca}")
+                        print(f"Status:{status}")
                 arq_animais.close()
-
                 
                 input("Pressione ENTER para continuar...")
 
@@ -320,7 +269,9 @@ while resp != '0':
                     nv_tipo=input("Tipo:")
                     nv_raca=input("Raça:")
                     nv_dono=input("Dono(a):")
-                    animais[id]=[nv_nome, nv_dta_nas, nv_tipo,nv_raca,nv_dono]
+                    nv_status=input("Status(Ativo/Inativo):")
+                    nv_status=nv_status.lower()
+                    animais[id]=[nv_nome, nv_dta_nas, nv_tipo,nv_raca,nv_dono, nv_status]
 
                     arq_animais=open("animais.txt","w")
                     for chaves, dados in animais.items():
@@ -328,7 +279,9 @@ while resp != '0':
                         arq_animais.write(dados[0]+',')
                         arq_animais.write(dados[1]+',')
                         arq_animais.write(dados[2]+',')
-                        arq_animais.write(dados[3]+'\n')
+                        arq_animais.write(dados[3]+',')                                              
+                        arq_animais.write(dados[4]+',')
+                        arq_animais.write(dados[5]+'\n')
                     arq_animais.close()
 
                     print("Dados alterados com sucesso")
@@ -345,7 +298,7 @@ while resp != '0':
 
                 id=input("Digite o id do animal:")
         
-                del animais[id]
+                animais[id][5]="inativo"
 
                 arq_animais=open('animais.txt','w')
                 for chaves, dados in animais.items():
@@ -354,7 +307,8 @@ while resp != '0':
                     arq_animais.write(dados[1]+',')
                     arq_animais.write(dados[2]+',')
                     arq_animais.write(dados[3]+',')
-                    arq_animais.write(dados[4]+'\n')
+                    arq_animais.write(dados[4]+',')
+                    arq_animais.write(dados[5]+'\n')
                 arq_animais.close()
 
                 print("Animal excluído com sucesso")
@@ -391,24 +345,21 @@ while resp != '0':
                 cpf=input("CPF:")
                 fone=input("Telefone:")
                 crmv=input("Digite seu CRMV:")
+                status="ativo"
                 id=str((len(veterinarios)+1))
+                veterinarios[id]=[nome,dta_nas,cpf,fone,crmv,status]
 
-                veterinarios[id]=[nome,dta_nas,cpf,fone,crmv]
-
-                arq_veterinarios=open("veterinarios.txt","w")
+                arq_veterinarios=open("veterinarios.txt","a")
                 arq_veterinarios.write(id+',')
                 arq_veterinarios.write(veterinarios[id][0]+',')
                 arq_veterinarios.write(veterinarios[id][1]+',')
                 arq_veterinarios.write(veterinarios[id][2]+',')
                 arq_veterinarios.write(veterinarios[id][3]+',')
-                arq_veterinarios.write(veterinarios[id][4]+'\n')
+                arq_veterinarios.write(veterinarios[id][4]+',')
+                arq_veterinarios.write(veterinarios[id][5]+'\n')
                 arq_veterinarios.close()
 
-                print(f"Veterinário cadastrado com sucesso!")
-            
-                for chave in veterinarios:
-                    if chave==id:
-                        print(f"O id do veterinário é {chave}")
+                print(f"Veterinário cadastrado com sucesso!\nO id do veterinário é {id}")
                 
                 input("Pressione ENTER para continuar...")
 
@@ -428,17 +379,19 @@ while resp != '0':
                 arq_veterinarios= open("veterinarios.txt", "r")
                 for linha in arq_veterinarios:
                     campos=linha.strip().split(',')
-                    if campos[0]==id:
+                    if campos[0]==id and campos[6]=="ativo":
                         nome=campos[1]
                         dta_nas=campos[2]
                         cpf=campos[3]
                         fone=campos[4]
                         crmv=campos[5]
+                        status=campos[6]
                         print(f"Nome:{nome}")
                         print(f"Data de nascimento:{dta_nas}")
                         print(f"CPF:{cpf}")
                         print(f"Fone:{fone}")
                         print(f"CRMV:{crmv}")
+                        print(f"Status:{status}")
                 arq_veterinarios.close()
                 input("Pressione ENTER para continuar...")
 
@@ -459,16 +412,19 @@ while resp != '0':
                     nv_cpf=input("CPF:")
                     nv_fone=input("Telefone:")
                     nv_crmv=input("CRMV:")
-                    veterinarios[id]=[nv_nome, nv_dta_nas,nv_cpf,nv_fone, nv_crmv]
+                    nv_status=input("Status(Ativo/Inativo):")
+                    nv_status=nv_status.lower()
+                    veterinarios[id]=[nv_nome, nv_dta_nas,nv_cpf,nv_fone, nv_crmv,nv_status]
 
                     arq_veterinarios=open("veterinarios.txt","w")
                     for chaves, dados in veterinarios.items():
-                        arq_veterinarios.write(chave+',')
+                        arq_veterinarios.write(chaves+',')
                         arq_veterinarios.write(dados[0]+',')
                         arq_veterinarios.write(dados[1]+',')
                         arq_veterinarios.write(dados[2]+',')
                         arq_veterinarios.write(dados[3]+',')
-                        arq_veterinarios.write(dados[4]+'\n')
+                        arq_veterinarios.write(dados[4]+',')
+                        arq_veterinarios.write(dados[5]+'\n')
                     arq_veterinarios.close()
 
                     print("Dados alterados com sucesso")
@@ -485,7 +441,7 @@ while resp != '0':
 
                 id=input("Digite o id do veterinário:")
         
-                del veterinarios[id]
+                veterinarios[id][5]="inativo"
                    
                 arq_veterinarios=open('veterinarios.txt','w')
                 for chaves, dados in veterinarios.items():
@@ -494,7 +450,8 @@ while resp != '0':
                     arq_veterinarios.write(dados[1]+',')
                     arq_veterinarios.write(dados[2]+',')
                     arq_veterinarios.write(dados[3]+',')
-                    arq_veterinarios.write(dados[4]+'\n')
+                    arq_veterinarios.write(dados[4]+',')
+                    arq_veterinarios.write(dados[5]+'\n')
                 arq_veterinarios.close()
 
 
@@ -533,7 +490,7 @@ while resp != '0':
                 id_vet=input("ID veterinário:")
                 id=str((len(consultas)+1))
                 dta_consul=input("Data:")
-                status=input("Status:")
+                status="agendada"
             
                 consultas[id]=[id_clie, id_ani,id_vet,dta_consul,status]
                 
@@ -546,11 +503,8 @@ while resp != '0':
                 arq_consultas.write(consultas[id][4]+'\n')              
                 arq_consultas.close()
 
-                print(f"Consulta cadastrada com sucesso!")
-            
-                for chave in consultas:
-                    if chave==id:
-                        print(f"O id da consulta é {chave}")
+                print(f"Consulta cadastrada com sucesso!\nO id da consulta é {id}")
+
                 input("Pressione ENTER para continuar...")
 
 
@@ -627,7 +581,7 @@ while resp != '0':
 
                 id=input("Digite o id da consulta:")
         
-                del consultas[id]     
+                consultas[id][4]="inativa"     
                 
                 arq_consultas=open('consultas.txt','w')
                 for chaves, dados in consultas.items():

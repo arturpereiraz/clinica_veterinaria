@@ -1,7 +1,12 @@
-from clientes import recuperar_dados_clientes
-from animais import recuperar_dados_aniamis
-from veterinarios import recuperar_dados_veterinarios
-from consultas import recuperar_dados_consultas
+from clientes import recuperar_dados_clientes, gravar_dados_clientes, cadastrar_clientes,exibir_clientes,clientes_ativos, clientes_inativos, pesquisar_cli, animais_clie
+
+from animais import recuperar_dados_animais,gravar_dados_animais, cadastrar_animais,exibir_animais, animais_ativos, animais_inativos, pesquisar_ani, animais_consul
+
+from veterinarios import recuperar_dados_veterinarios,gravar_dados_veterinarios,cadastrar_veterinarios,exibir_veterinarios, veterinarios_ativos,veterinarios_inativos, pesquisar_vet, veterinarios_consul
+
+from consultas import recuperar_dados_consultas, gravar_dados_consultas,cadastrar_consultas,exibir_consultas
+
+from validacaoes import validar_cpf, validar_fone
 import  os
 
 resp = ''
@@ -12,7 +17,7 @@ veterinarios={}
 consultas={}
 
 recuperar_dados_clientes(clientes)
-recuperar_dados_aniamis(animais)
+recuperar_dados_animais(animais)
 recuperar_dados_veterinarios(veterinarios)
 recuperar_dados_consultas(consultas)
 
@@ -28,7 +33,8 @@ while resp != '0':
     print("##  2 - Animais             #")
     print("##  3 - Veterinários        #")
     print("##  4 - Consultas           #")
-    print("##  5 - Informações         #")
+    print("##  5 - Relatórios          #")
+    print("##  6 - Informações         #")
     print("##  0- Sair                 #")
 
 
@@ -62,20 +68,23 @@ while resp != '0':
 
                 nome=input("Nome:")
                 dta_nas=input("Data de nascimento(xx/xx/xxx):")
-                cpf=input("CPF:")
-                fone=input("Telefone:")
+                while True:
+                    cpf=input("CPF:")
+                    if validar_cpf(cpf)== True:
+                        break
+                    else:
+                        print("Digite um cpf válido")
+                while True:
+                    fone=input("Fone:")
+                    if validar_fone(fone)==True:
+                        break
+                    else:
+                        print("Digite um telefone válido")
                 status=("ativo")
                 id=str((len(clientes)+1))
                 clientes[id]=[nome,dta_nas,cpf,fone,status]
 
-                arq_clientes=open("clientes.txt","a")
-                arq_clientes.write(id+',')
-                arq_clientes.write(clientes[id][0]+',')
-                arq_clientes.write(clientes[id][1]+',')
-                arq_clientes.write(clientes[id][2]+',')
-                arq_clientes.write(clientes[id][3]+',')
-                arq_clientes.write(clientes[id][4]+'\n')
-                arq_clientes.close()
+                cadastrar_clientes(clientes,id)
 
                 print(f"Cliente cadastrado com sucesso!\nO id do cliente é {id}")
                            
@@ -91,22 +100,11 @@ while resp != '0':
                 print()
 
                 id=(input("Informe o ID do cliente:"))
-                
-                arq_clientes= open("clientes.txt", "r")
-                for linha in arq_clientes:
-                    campos=linha.strip().split(',')
-                    if campos[0]==id and campos[5]=="ativo":
-                        nome=campos[1]
-                        dta_nas=campos[2]
-                        cpf=campos[3]
-                        fone=campos[4]
-                        status=campos[5]
-                        print(f"Nome:{nome}")
-                        print(f"Data de nascimento:{dta_nas}")
-                        print(f"CPF:{cpf}")
-                        print(f"Fone:{fone}")
-                        print(f"Status:{status}")
-                arq_clientes.close()
+
+                if id in clientes:
+                    exibir_clientes(id)
+                else:
+                    print("Cliente não encontrado")
 
                 input("Pressione ENTER para continuar...")
 
@@ -124,25 +122,31 @@ while resp != '0':
                 if id in clientes:
                     nv_nome=input("Nome:")
                     nv_dta_nas=input("Data de nascimento(xx/xx/xxx):")
-                    nv_cpf=input("CPF:")
-                    nv_fone=input("Telefone:")
+                    while True:
+                        nv_cpf=input("CPF:")
+                        if validar_cpf(nv_cpf)== True:
+                            break
+                        else:
+                            print("Digite um cpf válido")
+                    while True:
+                        nv_fone=input("Fone:")
+                        if validar_fone(nv_fone)=="True":
+                            break
+                        else:
+                            print("Digite um telefone válido")
                     nv_status=input("Status(Ativo/Inativo):)")
                     nv_status=nv_status.lower()
                     clientes[id]=[nv_nome,nv_dta_nas,nv_cpf,nv_fone,nv_status]
-                                      
-                    arq_clientes=open("clientes.txt","w")
-                    for chaves, dados in clientes.items():
-                        arq_clientes.write(chaves+',')
-                        arq_clientes.write(dados[0]+',')
-                        arq_clientes.write(dados[1]+',')
-                        arq_clientes.write(dados[2]+',')                                               
-                        arq_clientes.write(dados[3]+',')
-                        arq_clientes.write(dados[4]+'\n')
 
-                    arq_clientes.close()
-
+                    gravar_dados_clientes(clientes)
+                    
                     print("Dados alterados com sucesso")
-                    input("Pressione ENTER para continuar...")
+
+                else:
+                    
+                    print("Cliente não encontrado")
+
+                input("Pressione ENTER para continuar...")
                     
 
             elif opcao=="4":
@@ -155,25 +159,16 @@ while resp != '0':
                 print()
 
                 id=input("Digite o id do cliente:")
-    
-                clientes[id][4]="inativo"
 
-                arq_clientes=open('clientes.txt','w')
-                for chaves, dados in clientes.items():
-                    arq_clientes.write(chaves+',')
-                    arq_clientes.write(dados[0]+',')
-                    arq_clientes.write(dados[1]+',')
-                    arq_clientes.write(dados[2]+',')
-                    arq_clientes.write(dados[3]+',')
-                    arq_clientes.write(dados[4]+'\n')
-
-                arq_clientes.close()
-
-                print("Cliente excluído/desativado com sucesso")
+                if id in clientes:
+                    clientes[id][4]="inativo"
+                    gravar_dados_clientes(clientes)
+                    print("Cliente excluído/desativado com sucesso")
+                else:
+                    print("Cliente não encontrado")
+                
                 input("Pressione ENTER para continuar...")
  
-        
-
     elif resp == '2':
         os.system("clear")
         opcao=""
@@ -206,19 +201,13 @@ while resp != '0':
                 raca=input("Raça:")
                 id=str((len(animais)+1))
                 id_clie=input("Digite o id do cliente:")
-                status=("ativo")
+                if id_clie not in clientes:
+                    print("Cliente não cadastrado")
+                    id_clie=input("Digite um id válido")
+                status="ativo"
                 animais[id]=[nome,dta_nas,tipo,raca,id_clie,status]
 
-                arq_animais=open("animais.txt","a")
-                arq_animais.write(id+',')
-                arq_animais.write(animais[id][0]+',')
-                arq_animais.write(animais[id][1]+',')
-                arq_animais.write(animais[id][2]+',')
-                arq_animais.write(animais[id][3]+',')
-                arq_animais.write(animais[id][4]+',')
-                arq_animais.write(animais[id][5]+'\n')
-
-                arq_animais.close()
+                cadastrar_animais(animais,id)
 
                 print(f"Animal cadastrado com sucesso!\nO id do animal é {id}")
                 
@@ -234,22 +223,11 @@ while resp != '0':
                 print()
 
                 id=input("Informe o ID do animal:")
-                arq_animais= open("animais.txt", "r")
-                for linha in arq_animais:
-                    campos=linha.strip().split(',')
-                    if campos[0]==id and campos[6]=="ativo":
-                        nome=campos[1]
-                        dta_nas=campos[2]
-                        tipo=campos[3]
-                        raca=campos[4]
-                        id_cli=campos[5]
-                        status=campos[6]
-                        print(f"Nome:{nome}")
-                        print(f"Data de nascimento:{dta_nas}")
-                        print(f"Tipo:{tipo}")
-                        print(f"Raça:{raca}")
-                        print(f"Status:{status}")
-                arq_animais.close()
+
+                if id in animais:
+                    exibir_animais(id)
+                else:
+                    print("Animal não encontrado")
                 
                 input("Pressione ENTER para continuar...")
 
@@ -268,24 +246,22 @@ while resp != '0':
                     nv_dta_nas=input("Data de nascimento(xx/xx/xxx):")
                     nv_tipo=input("Tipo:")
                     nv_raca=input("Raça:")
-                    nv_dono=input("Dono(a):")
+                    nv_dono=input("Digite id do cliente:")
+                    if id_clie not in clientes:
+                        print("Cliente não cadastrado")
+                        nv_dono=input("Digite um id válido")
                     nv_status=input("Status(Ativo/Inativo):")
                     nv_status=nv_status.lower()
                     animais[id]=[nv_nome, nv_dta_nas, nv_tipo,nv_raca,nv_dono, nv_status]
-
-                    arq_animais=open("animais.txt","w")
-                    for chaves, dados in animais.items():
-                        arq_animais.write(chaves+',')
-                        arq_animais.write(dados[0]+',')
-                        arq_animais.write(dados[1]+',')
-                        arq_animais.write(dados[2]+',')
-                        arq_animais.write(dados[3]+',')                                              
-                        arq_animais.write(dados[4]+',')
-                        arq_animais.write(dados[5]+'\n')
-                    arq_animais.close()
-
+                    
+                    gravar_dados_animais(animais)
+                    
                     print("Dados alterados com sucesso")
-                    input("Pressione ENTER para continuar...")
+
+                else:
+                    print("Animal não encontrado")
+                
+                input("Pressione ENTER para continuar...")
 
             elif opcao=="4":
         
@@ -297,21 +273,11 @@ while resp != '0':
                 print()
 
                 id=input("Digite o id do animal:")
-        
-                animais[id][5]="inativo"
 
-                arq_animais=open('animais.txt','w')
-                for chaves, dados in animais.items():
-                    arq_animais.write(chaves+',')
-                    arq_animais.write(dados[0]+',')
-                    arq_animais.write(dados[1]+',')
-                    arq_animais.write(dados[2]+',')
-                    arq_animais.write(dados[3]+',')
-                    arq_animais.write(dados[4]+',')
-                    arq_animais.write(dados[5]+'\n')
-                arq_animais.close()
-
-                print("Animal excluído com sucesso")
+                if id in animais:
+                    animais[id][5]="inativo"
+                    gravar_dados_animais(animais)
+                    print("Animal excluído com sucesso")
                 input("Pressione ENTER para continuar...")
 
         
@@ -342,22 +308,24 @@ while resp != '0':
                 print()
                 nome=input("Nome:")
                 dta_nas=input("Data de nascimento(xx/xx/xxx):")
-                cpf=input("CPF:")
-                fone=input("Telefone:")
+                while True:
+                    cpf=input("CPF:")
+                    if validar_cpf(cpf)== True:
+                        break
+                    else:
+                        print("Digite um cpf válido")
+                while True:
+                    fone=input("Fone:")
+                    if validar_fone(fone)=="True":
+                        break
+                    else:
+                        print("Digite um telefone válido")
                 crmv=input("Digite seu CRMV:")
                 status="ativo"
                 id=str((len(veterinarios)+1))
                 veterinarios[id]=[nome,dta_nas,cpf,fone,crmv,status]
 
-                arq_veterinarios=open("veterinarios.txt","a")
-                arq_veterinarios.write(id+',')
-                arq_veterinarios.write(veterinarios[id][0]+',')
-                arq_veterinarios.write(veterinarios[id][1]+',')
-                arq_veterinarios.write(veterinarios[id][2]+',')
-                arq_veterinarios.write(veterinarios[id][3]+',')
-                arq_veterinarios.write(veterinarios[id][4]+',')
-                arq_veterinarios.write(veterinarios[id][5]+'\n')
-                arq_veterinarios.close()
+                cadastrar_veterinarios(veterinarios,id)
 
                 print(f"Veterinário cadastrado com sucesso!\nO id do veterinário é {id}")
                 
@@ -375,24 +343,10 @@ while resp != '0':
                 print()
 
                 id=(input("Informe o ID do veterinário:"))
-
-                arq_veterinarios= open("veterinarios.txt", "r")
-                for linha in arq_veterinarios:
-                    campos=linha.strip().split(',')
-                    if campos[0]==id and campos[6]=="ativo":
-                        nome=campos[1]
-                        dta_nas=campos[2]
-                        cpf=campos[3]
-                        fone=campos[4]
-                        crmv=campos[5]
-                        status=campos[6]
-                        print(f"Nome:{nome}")
-                        print(f"Data de nascimento:{dta_nas}")
-                        print(f"CPF:{cpf}")
-                        print(f"Fone:{fone}")
-                        print(f"CRMV:{crmv}")
-                        print(f"Status:{status}")
-                arq_veterinarios.close()
+                if id in veterinarios:
+                    exibir_veterinarios(id)
+                else:
+                    print("Veterinário não encontrado")
                 input("Pressione ENTER para continuar...")
 
 
@@ -409,26 +363,28 @@ while resp != '0':
                 if id in veterinarios:
                     nv_nome=input("Nome:")
                     nv_dta_nas=input("Data de nascimento(xx/xx/xxx):")
-                    nv_cpf=input("CPF:")
-                    nv_fone=input("Telefone:")
+                    while True:
+                        nv_cpf=input("CPF:")
+                        if validar_cpf(nv_cpf)== True:
+                            break
+                        else:
+                            print("Digite um cpf válido")
+                    while True:
+                        nv_fone=input("Fone:")
+                        if validar_fone(nv_fone)=="True":
+                            break
+                        else:
+                            print("Digite um telefone válido")
                     nv_crmv=input("CRMV:")
                     nv_status=input("Status(Ativo/Inativo):")
                     nv_status=nv_status.lower()
                     veterinarios[id]=[nv_nome, nv_dta_nas,nv_cpf,nv_fone, nv_crmv,nv_status]
 
-                    arq_veterinarios=open("veterinarios.txt","w")
-                    for chaves, dados in veterinarios.items():
-                        arq_veterinarios.write(chaves+',')
-                        arq_veterinarios.write(dados[0]+',')
-                        arq_veterinarios.write(dados[1]+',')
-                        arq_veterinarios.write(dados[2]+',')
-                        arq_veterinarios.write(dados[3]+',')
-                        arq_veterinarios.write(dados[4]+',')
-                        arq_veterinarios.write(dados[5]+'\n')
-                    arq_veterinarios.close()
-
+                    gravar_dados_veterinarios(veterinarios)
                     print("Dados alterados com sucesso")
-                    input("Pressione ENTER para continuar...")
+                else:
+                    print("Veterinário não encontrado")
+                input("Pressione ENTER para continuar...")
 
         
             elif opcao=="4":
@@ -440,22 +396,15 @@ while resp != '0':
                 print()
 
                 id=input("Digite o id do veterinário:")
-        
-                veterinarios[id][5]="inativo"
-                   
-                arq_veterinarios=open('veterinarios.txt','w')
-                for chaves, dados in veterinarios.items():
-                    arq_veterinarios.write(chaves+',')
-                    arq_veterinarios.write(dados[0]+',')
-                    arq_veterinarios.write(dados[1]+',')
-                    arq_veterinarios.write(dados[2]+',')
-                    arq_veterinarios.write(dados[3]+',')
-                    arq_veterinarios.write(dados[4]+',')
-                    arq_veterinarios.write(dados[5]+'\n')
-                arq_veterinarios.close()
 
+                if id in veterinarios:
+                    veterinarios[id][5]="inativo"            
+                    gravar_dados_veterinarios(veterinarios)
+                    print("Veterinário excluído com sucesso")
 
-                print("Veterinário excluído com sucesso")
+                else:
+                    print("Veterinário não encontrado")
+
                 input("Pressione ENTER para continuar...")
 
     
@@ -486,22 +435,24 @@ while resp != '0':
                 print("#############################")
                 print()
                 id_clie=input("ID cliente:")
+                if id_clie not in clientes:
+                    print("Cliente não cadastrado")
+                    id_clie=input("Digite um id válido")
                 id_ani=input("ID animal:")
+                if id_ani not in animais:
+                    print("Animal não cadastrado")
+                    id_ani=input("Digite um id válido")
                 id_vet=input("ID veterinário:")
+                if id_vet not in veterinarios:
+                    print("Veterinário não cadastrado")
+                    id_vet=input("Digite um id válido")
                 id=str((len(consultas)+1))
                 dta_consul=input("Data:")
                 status="agendada"
             
                 consultas[id]=[id_clie, id_ani,id_vet,dta_consul,status]
                 
-                arq_consultas=open("consultas.txt","a")
-                arq_consultas.write(id+',')
-                arq_consultas.write(consultas[id][0]+',')
-                arq_consultas.write(consultas[id][1]+',')
-                arq_consultas.write(consultas[id][2]+',')
-                arq_consultas.write(consultas[id][3]+',')
-                arq_consultas.write(consultas[id][4]+'\n')              
-                arq_consultas.close()
+                cadastrar_consultas(consultas,id)
 
                 print(f"Consulta cadastrada com sucesso!\nO id da consulta é {id}")
 
@@ -516,23 +467,13 @@ while resp != '0':
                 print("#############################")
                 print()
 
-                id=(input("Informe o ID da consulta:"))
+                id=(input("Informe o ID da consulta:"))      
                 
-                arq_consultas= open("consultas.txt", "r")
-                for linha in arq_consultas:
-                    campos=linha.strip().split(',')
-                    if campos[0]==id:
-                        id_cli=campos[1]
-                        id_ani=campos[2]
-                        id_vet=campos[3]
-                        dta_consul=campos[4]
-                        status=campos[5]
-                        print(f"Id cliente:{id_cli}")
-                        print(f"Id animal:{id_ani}")
-                        print(f"Id veterinário:{id_vet}")
-                        print(f"Data consulta:{dta_consul}")
-                        print(f"Status:{status}")
-                arq_consultas.close()
+                if id in consultas:
+                    exibir_consultas(id,clientes,animais,veterinarios)
+
+                else:
+                    print("Consulta não encontrada")
 
                 input("Pressione ENTER para continuar...")
 
@@ -545,29 +486,42 @@ while resp != '0':
                 print("#### Alterar consulta #####")
                 print("#############################")
                 print()
+                
+                print("Digite 1 para alterar todos os dados da consulta")
+                print()
+                print("Digite 2 para alterar o status da consulta")
+                print()
+                alter=input("Digite a opção:")
 
-                id=input("Digite o id da consulta:")
+                if alter=='1':    
+                    id=input("Digite o id da consulta:")
 
-                if id in consultas:
-                    nv_nid_clie=input("ID cliente:")
-                    nv_id_ani=input("ID animal:")
-                    nv_id_vet=input("ID veterinário:")
-                    nv_dta_consul=input("Data:")
-                    nv_status=input("Status:")
-                    consultas[id]=[nv_nid_clie,nv_id_ani,nv_id_vet,nv_dta_consul,nv_status]
+                    if id in consultas:
+                        nv_nid_clie=input("ID cliente:")
+                        nv_id_ani=input("ID animal:")
+                        nv_id_vet=input("ID veterinário:")
+                        nv_dta_consul=input("Data:")
+                        nv_status=input("Status:")
+                        nv_status=nv_status.lower
+                        consultas[id]=[nv_nid_clie,nv_id_ani,nv_id_vet,nv_dta_consul,nv_status]
                     
-                    arq_consultas=open('consultas.txt','w')
-                    for chaves, dados in consultas.items():
-                        arq_consultas.write(chaves+',')
-                        arq_consultas.write(dados[0]+',')
-                        arq_consultas.write(dados[1]+',')
-                        arq_consultas.write(dados[2]+',')
-                        arq_consultas.write(dados[3]+',')
-                        arq_consultas.write(dados[4]+'\n')
-                    arq_consultas.close()
+                        gravar_dados_consultas(consultas)
+                        print("Dados alterados com sucesso")
+                    else:
+                        print("Consulta não encontrada")
+                elif alter=='2':
+                
+                    id=input("Digite o id da consulta:")
+                    if id in consultas:
+                        nv_status=input("Status:")
+                        consultas[id][4]=nv_status.lower()
+                        gravar_dados_consultas(consultas)
 
-                    print("Dados alterados com sucesso")
-                    input("Pressione ENTER para continuar...")
+                    else:
+                        print("Consulta não encontrada")
+
+                
+                input("Pressione ENTER para continuar...")
 
         
             elif opcao=="4":
@@ -578,26 +532,221 @@ while resp != '0':
                 print("#### Excluir Consulta #####")
                 print("#############################")
                 print()
-
+    
                 id=input("Digite o id da consulta:")
-        
-                consultas[id][4]="inativa"     
                 
-                arq_consultas=open('consultas.txt','w')
-                for chaves, dados in consultas.items():
-                    arq_consultas.write(chaves+',')
-                    arq_consultas.write(dados[0]+',')
-                    arq_consultas.write(dados[1]+',')
-                    arq_consultas.write(dados[2]+',')
-                    arq_consultas.write(dados[3]+',')
-                    arq_consultas.write(dados[4]+'\n')
-                arq_consultas.close()
-                
-                print("Consulta excluída com sucesso")
-                input("Pressione ENTER para continuar...")
-      
+                if id in consultas:                
+                    consultas[id][4]="inativa"     
+                    gravar_dados_consultas(consultas)
+                    print("Consulta excluída com sucesso")
+                else:
+                    print("Consulta não encontrada")
 
-    elif resp=="5":
+                input("Pressione ENTER para continuar...")
+
+    elif resp == '5':
+        os.system("clear")  
+        opcao=""
+        while opcao!="5":  
+            os.system("clear")
+            print("#############################")
+            print("#### MÓDULO- RELATÓRIOS #####")
+            print("#############################")
+            print("##  1 - Relatórios Clientes        #")
+            print("##  2 - Relatórios Animais         #")
+            print("##  3 - Relatórios Veterinários    #")
+            print("##  4 - Relatórios Consultas       #")
+            print("##  5 - Menu Principal             #")
+
+            opcao = input("Digite uma opção: ")
+        
+            if opcao=="1":       
+                os.system("clear")
+                opcao=""
+                while opcao!="5":  
+                    os.system("clear")
+                    print("#############################")
+                    print("#### RELATÓRIOS- CLIENTES #####")
+                    print("#############################")
+                    print("##  1 - Clientes ativos         #")
+                    print("##  2 - Clientes inativos       #")
+                    print("##  3 - Pesquisar Usuário       #")
+                    print("##  4 - Animais                 #")
+                    print("##  5 - Menu Principal          #")
+
+                    opcao = input("Digite uma opção: ")
+
+                    if opcao=="1":
+                        os.system("clear")  
+                        print("#############################")
+                        print("#### CLIENTES ATIVOS #####")
+                        print("#############################")
+                
+                        clientes_ativos()
+                        
+                        input("Pressione ENTER para continuar...")
+                    
+                    elif opcao=="2":
+                        os.system("clear")  
+                        print("#############################")
+                        print("#### CLIENTES INATIVOS #####")
+                        print("#############################")
+                
+                        clientes_inativos()
+                        
+                        input("Pressione ENTER para continuar...")
+                    
+                    elif opcao=="3":
+                        os.system("clear")  
+                        print("#############################")
+                        print("#### PESQUISAR CLIENTES #####")
+                        print("#############################")
+                
+                        pes=input("Informe o início do nome: ")
+                        
+                        pesquisar_cli(pes)
+                        
+                        input("Pressione ENTER para continuar...")
+                    
+                    elif opcao=="4":
+                        os.system("clear")
+                        print("#############################")
+                        print("#### ANIMAIS-CLIENTES #####")
+                        print("#############################")
+
+                        id=input("Digite o id do cliente:")
+
+                        animais_clie(id,clientes)
+
+                        input("Pressione ENTER para continuar...")
+                
+            elif opcao=="2":       
+                os.system("clear")
+                opcao=""
+                while opcao!="5":  
+                    os.system("clear")
+                    print("#############################")
+                    print("#### RELATÓRIOS- ANIMAIS #####")
+                    print("#############################")
+                    print("##  1 - Animais ativos         #")
+                    print("##  2 - Animais inativos       #")
+                    print("##  3 - Pesquisar Animal       #")
+                    print("##  4 - Consultas               #")
+                    print("##  5 - Menu Principal          #")
+
+                    opcao = input("Digite uma opção: ")
+
+                    if opcao=="1":
+                        os.system("clear")  
+                        print("#############################")
+                        print("#### ANIMAIS ATIVOS #####")
+                        print("#############################")
+                
+                        animais_ativos(clientes)
+                        
+                        input("Pressione ENTER para continuar...")
+                    
+                    elif opcao=="2":
+                        os.system("clear")  
+                        print("#############################")
+                        print("#### ANIMAIS INATIVOS #####")
+                        print("#############################")
+                
+                        animais_inativos(clientes)
+                        
+                        input("Pressione ENTER para continuar...")
+                    
+                    elif opcao=="3":
+                        os.system("clear")  
+                        print("#############################")
+                        print("#### PESQUISAR ANIMAIS #####")
+                        print("#############################")
+                
+                        pes=input("Informe o início do nome: ")
+                        
+                        pesquisar_ani(pes)
+                        
+                        input("Pressione ENTER para continuar...")
+                    
+                    elif opcao=="4":
+                        os.system("clear")
+                        print("#############################")
+                        print("#### CONSULTAS- ANIMAIS #####")
+                        print("#############################")
+
+                        id=input("Digite o id do animal:")
+
+                        animais_consul(id,animais,clientes,veterinarios)
+
+                        input("Pressione ENTER para continuar...")
+            
+            elif opcao=="3":       
+                os.system("clear")
+                opcao=""
+                while opcao!="5":  
+                    os.system("clear")
+                    print("#############################")
+                    print("#### RELATÓRIOS- VETERINŔIOS #####")
+                    print("#############################")
+                    print("##  1 - Veternários ativos      #")
+                    print("##  2 - Veterinários inativos   #")
+                    print("##  3 - Pesquisar Veterinário   #")
+                    print("##  4 - Consultas               #")
+                    print("##  5 - Menu Principal          #")
+
+                    opcao = input("Digite uma opção: ")
+
+                    if opcao=="1":
+                        os.system("clear")  
+                        print("#############################")
+                        print("#### VETERINÁRIOS ATIVOS #####")
+                        print("#############################")
+                
+                        veterinarios_ativos()
+                        
+                        input("Pressione ENTER para continuar...")
+                    
+                    elif opcao=="2":
+                        os.system("clear")  
+                        print("#############################")
+                        print("#### VETERINÁRIOS INATIVOS #####")
+                        print("#############################")
+                
+                        veterinarios_inativos()
+                        
+                        input("Pressione ENTER para continuar...")
+                    
+                    elif opcao=="3":
+                        os.system("clear")  
+                        print("#############################")
+                        print("#### PESQUISAR VETERINÁRIO #####")
+                        print("#############################")
+                
+                        pes=input("Informe o início do nome: ")
+                        
+                        pesquisar_vet(pes)
+                        
+                        input("Pressione ENTER para continuar...")
+                    
+                    elif opcao=="4":
+                        os.system("clear")
+                        print("#############################")
+                        print("#### CONSULTAS-VETERINÁRIOS #####")
+                        print("#############################")
+
+                        id=input("Digite o id do veterinário:")
+
+                        veterinarios_consul(id,animais,clientes)
+
+                        input("Pressione ENTER para continuar...")
+
+                
+
+                        
+
+
+    
+    elif resp=="6":
         os.system("clear")
         opcao=''
         while opcao !="0":

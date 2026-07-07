@@ -1,3 +1,2 @@
-1,Bobzao,21/22/22,Urso,Polar,1,inativo
-2,Pingo,21/02/2222,Cachorro,viralata,1,inativo
-3,11,1,1,1,1,ativo
+1,Pingo,21/04/2021,Cachorro,Vira-lata,2,ativo
+2,Jupí,23/04/2021,Cachorro,Vira-lata,1,ativo
